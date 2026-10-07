@@ -30,6 +30,8 @@ public class PostUserSignUpService extends ResponseUtil {
     private final DepartmentRepository departmentRepository;
     private final PasswordEncoder passwordEncoder;
 
+    public static final String USER = "USER";
+
     @Transactional
     public BaseResponse<UserDto> execute(UserSignUpRequest input) {
         validateUserId(input);
@@ -52,7 +54,7 @@ public class PostUserSignUpService extends ResponseUtil {
                 .userId(input.getUserId())
                 .nip(input.getNip())
                 .name(input.getName())
-                .role(input.getRole().toUpperCase())
+                .role(USER)
                 .division(divisionEntity.getDivisionName())
                 .department(departmentEntity.getDepartmentName())
                 .build();
@@ -70,7 +72,7 @@ public class PostUserSignUpService extends ResponseUtil {
         users.setPassword(passwordEncoder.encode(input.getPassword()));
         users.setDivisionId(divisionEntity.getDivisionId());
         users.setDepartmentId(departmentEntity.getDepartmentId());
-        users.setRole(input.getRole().toUpperCase());
+        users.setRole(USER);
         users.setPosition(input.getPosition());
         users.setIsActive(false);
         users.setTokenVersion(0L);

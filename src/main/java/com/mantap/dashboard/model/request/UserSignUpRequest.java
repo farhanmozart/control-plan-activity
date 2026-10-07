@@ -24,8 +24,6 @@ public class UserSignUpRequest {
     @NotBlank
     private String departmentCode;
     @NotBlank
-    private String role;
-    @NotBlank
     private String position;
     @NotBlank
     private String divisionCode;

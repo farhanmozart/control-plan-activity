@@ -3,74 +3,68 @@ package com.mantap.dashboard.util;
 import com.mantap.dashboard.model.entity.UsersEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.function.Function;
+import java.util.UUID;
 
 @Component
 @Getter
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    private final SecretKey signingKey;
+    private final long expiration;
+    private final String issuer;
+    private final String audience;
 
-    @Value("${jwt.expiration}")
-    private Long expiration;
+    public JwtUtil(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") long expiration,
+            @Value("${jwt.issuer}") String issuer,
+            @Value("${jwt.audience}") String audience) {
+
+        this.signingKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        this.expiration = expiration;
+        this.issuer = issuer;
+        this.audience = audience;
+    }
 
     public String generateToken(UsersEntity user) {
 
+        Date now = new Date();
+        Date expiredAt = new Date(now.getTime() + expiration);
+
         return Jwts.builder()
+                .id(UUID.randomUUID().toString())
+                .issuer(issuer)
+                .audience()
+                .add(audience)
+                .and()
                 .subject(user.getNip())
                 .claim("userId", user.getUserId())
-                .claim("roleId", user.getRoleId())
-                .claim("departmentId", user.getDepartmentId())
-                .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(getSigningKey())
+                .issuedAt(now)
+                .expiration(expiredAt)
+                .signWith(signingKey)
                 .compact();
     }
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
+    public Claims parseToken(String token) {
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-
-    private Claims extractAllClaims(String token) {
         return Jwts.parser()
-                .verifyWith(getSigningKey())
+                .verifyWith(signingKey)
+                .requireIssuer(issuer)
+                .requireAudience(audience)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
 
-
-    public boolean validateToken(String token, String username) {
-        String tokenUsername = extractUsername(token);
-        return tokenUsername.equals(username)
-                && !isTokenExpired(token);
+    public String extractNip(String token) {
+        return parseToken(token).getSubject();
     }
-
-
-    private boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration)
-                .before(new Date());
-    }
-
-
-    private SecretKey getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    }
-
-
 }

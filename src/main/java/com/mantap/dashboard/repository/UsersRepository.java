@@ -33,4 +33,7 @@ public interface UsersRepository extends JpaRepository<UsersEntity, String> {
         WHERE u.NIP = :nip""", nativeQuery = true)
         Optional<UsersProjection> findUsersByNip(@Param("nip") String nip);
 
+    boolean existsByUserId(String userId);
+    boolean existsByNip(String nip);
+    boolean existsByEmail(String email);
 }

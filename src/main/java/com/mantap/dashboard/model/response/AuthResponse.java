@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AuthLoginResponse {
+public class AuthResponse {
     private String authToken;
     private UserDto user;
 
@@ -24,5 +24,6 @@ public class AuthLoginResponse {
         private String role;
         private String division;
         private String department;
+        private String status;
     }
 }

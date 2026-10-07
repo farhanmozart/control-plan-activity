@@ -4,8 +4,8 @@ import com.mantap.dashboard.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.projection.UsersProjection;
 import com.mantap.dashboard.model.request.AuthLoginRequest;
-import com.mantap.dashboard.model.response.AuthLoginResponse;
-import com.mantap.dashboard.model.response.AuthLoginResponse.UserDto;
+import com.mantap.dashboard.model.response.AuthResponse;
+import com.mantap.dashboard.model.response.AuthResponse.UserDto;
 import com.mantap.dashboard.repository.UsersRepository;
 import com.mantap.dashboard.util.JwtUtil;
 import com.mantap.dashboard.util.ResponseUtil;
@@ -25,7 +25,7 @@ public class PostAuthLoginService extends ResponseUtil {
     private final PasswordEncoder passwordEncoder;
 
 
-    public BaseResponse<AuthLoginResponse> execute(AuthLoginRequest input) {
+    public BaseResponse<AuthResponse> execute(AuthLoginRequest input) {
         UsersProjection userResponse = usersRepository.findUsersByNip(input.getNip()).orElseThrow(() ->
                 new BusinessException(ERROR_CODE_10000, ERROR_TITLE_10000, ERROR_MESSAGE_10000));
 
@@ -42,7 +42,7 @@ public class PostAuthLoginService extends ResponseUtil {
                 .role(userResponse.getRole())
                 .build();
 
-        AuthLoginResponse loginResponse = AuthLoginResponse.builder()
+        AuthResponse loginResponse = AuthResponse.builder()
                 .authToken(token)
                 .user(userDto)
                 .build();

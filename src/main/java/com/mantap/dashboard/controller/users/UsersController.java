@@ -2,7 +2,7 @@ package com.mantap.dashboard.controller.users;
 
 import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.request.UserSignUpRequest;
-import com.mantap.dashboard.model.response.AuthLoginResponse.UserDto;
+import com.mantap.dashboard.model.response.AuthResponse.UserDto;
 import com.mantap.dashboard.service.PostUserSignUpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

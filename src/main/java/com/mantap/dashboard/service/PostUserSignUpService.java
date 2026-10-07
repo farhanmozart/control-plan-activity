@@ -6,7 +6,7 @@ import com.mantap.dashboard.model.entity.DepartmentEntity;
 import com.mantap.dashboard.model.entity.DivisionEntity;
 import com.mantap.dashboard.model.entity.UsersEntity;
 import com.mantap.dashboard.model.request.UserSignUpRequest;
-import com.mantap.dashboard.model.response.AuthLoginResponse.UserDto;
+import com.mantap.dashboard.model.response.AuthResponse.UserDto;
 import com.mantap.dashboard.repository.DepartmentRepository;
 import com.mantap.dashboard.repository.DivisionRepository;
 import com.mantap.dashboard.repository.UsersRepository;
@@ -45,7 +45,7 @@ public class PostUserSignUpService extends ResponseUtil {
                 -> new BusinessException(ERROR_CODE_10007, ERROR_TITLE_10007, ERROR_MESSAGE_10007));
 
         if (!Objects.equals(departmentEntity.getDivisionId(), divisionEntity.getDivisionId())) {
-            throw new BusinessException(ERROR_CODE_10008, ERROR_MESSAGE_10008, ERROR_MESSAGE_10008);
+            throw new BusinessException(ERROR_CODE_10008, ERROR_TITLE_10008, ERROR_MESSAGE_10008);
         }
 
         constructUsers(input, divisionEntity, departmentEntity);
@@ -57,6 +57,7 @@ public class PostUserSignUpService extends ResponseUtil {
                 .role(USER)
                 .division(divisionEntity.getDivisionName())
                 .department(departmentEntity.getDepartmentName())
+                .status("PENDING APPROVAL")
                 .build();
 
         return ResponseUtil.success(SIGNUP_SUCCESS_CODE, SIGNUP_SUCCESS_MESSAGE, response);

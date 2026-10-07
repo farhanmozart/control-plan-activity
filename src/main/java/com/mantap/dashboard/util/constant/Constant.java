@@ -14,6 +14,10 @@ public class Constant {
     public static final String ERROR_TITLE_10002 = "Invalid Username or Password";
     public static final String ERROR_MESSAGE_10002 = "Invalid Username or Password";
 
+    public static final String ERROR_CODE_UNAUTHORIZED = "80000";
+    public static final String ERROR_TITLE_UNAUTHORIZED = "Unauthorized";
+    public static final String ERROR_MESSAGE_UNAUTHORIZED = "Unauthorized";
+
     public static final String NIP = "nip";
     public static final String ROLE_ID = "roleId";
     public static final String ROLE_NAME = "roleName";

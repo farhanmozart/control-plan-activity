@@ -32,15 +32,22 @@ public class UsersEntity {
     @Column(name = "PASSWORD")
     private String password;
 
+    @Column(name = "DIVISION_ID")
+    private String divisionId;
+
     @Column(name = "DEPARTMENT_ID")
     private String departmentId;
 
-    @Column(name = "ROLE_ID")
-    private String roleId;
+    @Column(name = "ROLE")
+    private String role;
 
     @Column(name = "POSITION")
     private String position;
 
     @Column(name = "IS_ACTIVE")
     private Boolean isActive;
+
+    @Column(name = "TOKEN_VERSION")
+    private Long tokenVersion;
+
 }

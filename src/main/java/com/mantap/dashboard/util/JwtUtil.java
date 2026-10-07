@@ -1,6 +1,6 @@
 package com.mantap.dashboard.util;
 
-import com.mantap.dashboard.model.entity.UsersEntity;
+import com.mantap.dashboard.model.projection.UsersProjection;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -34,8 +34,7 @@ public class JwtUtil {
         this.audience = audience;
     }
 
-    public String generateToken(UsersEntity user) {
-
+    public String generateToken(UsersProjection user) {
         Date now = new Date();
         Date expiredAt = new Date(now.getTime() + expiration);
 
@@ -47,6 +46,7 @@ public class JwtUtil {
                 .and()
                 .subject(user.getNip())
                 .claim("userId", user.getUserId())
+                .claim("tokenVersion", user.getTokenVersion())
                 .issuedAt(now)
                 .expiration(expiredAt)
                 .signWith(signingKey)
@@ -62,9 +62,5 @@ public class JwtUtil {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    public String extractNip(String token) {
-        return parseToken(token).getSubject();
     }
 }

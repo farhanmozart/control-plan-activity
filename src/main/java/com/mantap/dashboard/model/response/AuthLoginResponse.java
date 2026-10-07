@@ -22,6 +22,7 @@ public class AuthLoginResponse {
         private String nip;
         private String name;
         private String role;
+        private String division;
         private String department;
     }
 }

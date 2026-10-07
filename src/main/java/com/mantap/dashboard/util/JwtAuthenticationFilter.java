@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,48 +30,67 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UsersRepository usersRepository;
 
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse httpServletResponse,
-            FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest,
+                                    @NonNull HttpServletResponse httpServletResponse,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authHeader = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, httpServletResponse);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
-
         String token = authHeader.substring(7);
 
         try {
             Claims claims = jwtUtil.parseToken(token);
             String nip = claims.getSubject();
-            if (SecurityContextHolder.getContext()
-                    .getAuthentication() == null) {
 
-                UsersEntity user = usersRepository
-                        .findByNip(nip)
-                        .orElseThrow();
+            Number tokenVersionClaim = claims.get("tokenVersion", Number.class);
 
-                if (!Boolean.TRUE.equals(user.getIsActive())) {
-                    filterChain.doFilter(request, httpServletResponse);
+            if (tokenVersionClaim == null) {
+                SecurityContextHolder.clearContext();
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
+                return;
+            }
+
+            long tokenVersion = tokenVersionClaim.longValue();
+
+            if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                UsersEntity user = usersRepository.findByNip(nip).orElse(null);
+
+                if (user == null) {
+                    SecurityContextHolder.clearContext();
+                    filterChain.doFilter(httpServletRequest, httpServletResponse);
                     return;
                 }
 
-                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRoleId()));
+                if (!Boolean.TRUE.equals(user.getIsActive())) {
+                    SecurityContextHolder.clearContext();
+                    filterChain.doFilter(httpServletRequest, httpServletResponse);
+                    return;
+                }
 
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getNip(), null, authorities);
+                long currentTokenVersion = user.getTokenVersion() == null ? 0L : user.getTokenVersion();
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                if (currentTokenVersion != tokenVersion) {
+                    SecurityContextHolder.clearContext();
+                    filterChain.doFilter(httpServletRequest, httpServletResponse);
+                    return;
+                }
 
+                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(user.getNip(), null, authorities);
+
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
 
         } catch (JwtException | IllegalArgumentException exception) {
             SecurityContextHolder.clearContext();
         }
-        filterChain.doFilter(request, httpServletResponse);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

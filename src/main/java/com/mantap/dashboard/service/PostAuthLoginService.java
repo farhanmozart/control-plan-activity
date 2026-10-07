@@ -2,7 +2,7 @@ package com.mantap.dashboard.service;
 
 import com.mantap.dashboard.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
-import com.mantap.dashboard.model.entity.UsersEntity;
+import com.mantap.dashboard.model.projection.UsersProjection;
 import com.mantap.dashboard.model.request.AuthLoginRequest;
 import com.mantap.dashboard.model.response.AuthLoginResponse;
 import com.mantap.dashboard.model.response.AuthLoginResponse.UserDto;
@@ -26,19 +26,20 @@ public class PostAuthLoginService extends ResponseUtil {
 
 
     public BaseResponse<AuthLoginResponse> execute(AuthLoginRequest input) {
-        UsersEntity user = usersRepository.findByNip(input.getNip()).orElseThrow(() ->
+        UsersProjection userResponse = usersRepository.findUsersByNip(input.getNip()).orElseThrow(() ->
                 new BusinessException(ERROR_CODE_10000, ERROR_TITLE_10000, ERROR_MESSAGE_10000));
 
-        validateUser(user, input);
+        validateUser(userResponse, input);
 
-        String token = jwtUtil.generateToken(user);
+        String token = jwtUtil.generateToken(userResponse);
 
         UserDto userDto = UserDto.builder()
-                .userId(user.getUserId())
-                .nip(user.getNip())
-                .name(user.getName())
-                .role(user.getRoleId())
-                .department(user.getDepartmentId())
+                .userId(userResponse.getUserId())
+                .nip(userResponse.getNip())
+                .name(userResponse.getName())
+                .division(userResponse.getDivision())
+                .department(userResponse.getDepartment())
+                .role(userResponse.getRole())
                 .build();
 
         AuthLoginResponse loginResponse = AuthLoginResponse.builder()
@@ -49,7 +50,7 @@ public class PostAuthLoginService extends ResponseUtil {
         return ResponseUtil.success(LOGIN_SUCCESS_CODE, LOGIN_SUCCESS_MESSAGE, loginResponse);
     }
 
-    private void validateUser(UsersEntity user, AuthLoginRequest input) {
+    private void validateUser(UsersProjection user, AuthLoginRequest input) {
         if (Boolean.FALSE.equals(user.getIsActive())) {
             throw new BusinessException(ERROR_CODE_10001, ERROR_TITLE_10001, ERROR_MESSAGE_10001);
         }

@@ -18,7 +18,7 @@ import static com.mantap.dashboard.util.constant.ResponseConstant.APPROVAL_SUCCE
 
 @Service
 @RequiredArgsConstructor
-public class PostAuthApproveUserService extends ResponseUtil {
+public class PostApproveUserService extends ResponseUtil {
     private final UsersRepository usersRepository;
 
     @Transactional

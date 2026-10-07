@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,6 +33,28 @@ public interface UsersRepository extends JpaRepository<UsersEntity, String> {
             ON dp.DEPARTMENT_ID = u.DEPARTMENT_ID
         WHERE u.NIP = :nip""", nativeQuery = true)
         Optional<UsersProjection> findUsersByNip(@Param("nip") String nip);
+
+    @Query(value = """
+        SELECT
+            u.USER_ID AS userId,
+            u.NIP AS nip,
+            u.NAME AS name,
+            u.EMAIL AS email,
+            u.ROLE AS role,
+            u.POSITION AS position,
+            d.DIVISION_NAME AS division,
+            dp.DEPARTMENT_NAME AS department,
+            u.IS_ACTIVE AS isActive
+        FROM USERS u
+        LEFT JOIN DIVISION d
+            ON d.DIVISION_ID = u.DIVISION_ID
+        LEFT JOIN DEPARTMENT dp
+            ON dp.DEPARTMENT_ID = u.DEPARTMENT_ID
+        WHERE u.IS_ACTIVE = 0
+        ORDER BY u.NAME ASC""",
+            nativeQuery = true
+    )
+    List<UsersProjection> findPendingUsers();
 
     boolean existsByUserId(String userId);
     boolean existsByNip(String nip);

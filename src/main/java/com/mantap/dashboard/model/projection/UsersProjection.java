@@ -10,4 +10,6 @@ public interface UsersProjection {
     Integer getIsActive();
     String getPassword();
     Long getTokenVersion();
+    String getEmail();
+    String getPosition();
 }

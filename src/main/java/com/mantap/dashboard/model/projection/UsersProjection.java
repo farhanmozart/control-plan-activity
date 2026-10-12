@@ -12,4 +12,5 @@ public interface UsersProjection {
     Long getTokenVersion();
     String getEmail();
     String getPosition();
+    String getStatus();
 }

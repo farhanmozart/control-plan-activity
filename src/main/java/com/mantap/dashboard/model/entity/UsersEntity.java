@@ -1,13 +1,13 @@
 package com.mantap.dashboard.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.mantap.dashboard.util.enumeration.UserStatus;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "USERS")
@@ -49,5 +49,18 @@ public class UsersEntity {
 
     @Column(name = "TOKEN_VERSION")
     private Long tokenVersion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private UserStatus status;
+
+    @Column(name = "FAILED_LOGIN_ATTEMPTS")
+    private Integer failedLoginAttempts;
+
+    @Column(name = "LOCKED_UNTIL")
+    private LocalDateTime lockedUntil;
+
+    @Column(name = "LAST_LOGIN_AT")
+    private LocalDateTime lastLoginAt;
 
 }

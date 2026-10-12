@@ -1,5 +1,6 @@
 package com.mantap.dashboard.util;
 
+import com.mantap.dashboard.model.entity.UsersEntity;
 import com.mantap.dashboard.model.projection.UsersProjection;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -34,7 +35,7 @@ public class JwtUtil {
         this.audience = audience;
     }
 
-    public String generateToken(UsersProjection user) {
+    public String generateToken(UsersEntity user) {
         Date now = new Date();
         Date expiredAt = new Date(now.getTime() + expiration);
 

@@ -11,6 +11,7 @@ import com.mantap.dashboard.repository.DepartmentRepository;
 import com.mantap.dashboard.repository.DivisionRepository;
 import com.mantap.dashboard.repository.UsersRepository;
 import com.mantap.dashboard.util.ResponseUtil;
+import com.mantap.dashboard.util.enumeration.UserStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -74,6 +75,7 @@ public class PostUserSignUpService extends ResponseUtil {
         users.setDivisionId(divisionEntity.getDivisionId());
         users.setDepartmentId(departmentEntity.getDepartmentId());
         users.setRole(USER);
+        users.setStatus(UserStatus.PENDING_APPROVAL);
         users.setPosition(input.getPosition());
         users.setIsActive(false);
         users.setTokenVersion(0L);

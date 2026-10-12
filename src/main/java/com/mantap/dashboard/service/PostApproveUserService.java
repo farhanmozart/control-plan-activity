@@ -8,6 +8,7 @@ import com.mantap.dashboard.model.request.AuthApproveUserRequest;
 import com.mantap.dashboard.model.response.AuthResponse.UserDto;
 import com.mantap.dashboard.repository.UsersRepository;
 import com.mantap.dashboard.util.ResponseUtil;
+import com.mantap.dashboard.util.enumeration.UserStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class PostApproveUserService extends ResponseUtil {
     public BaseResponse<UserDto> execute(AuthApproveUserRequest input) {
         UsersEntity entity = usersRepository.findByNip(input.getNip()).orElseThrow(()
                 -> new BusinessException(ERROR_CODE_10000, ERROR_TITLE_10000, ERROR_MESSAGE_10000));
+        entity.setStatus(UserStatus.ACTIVE);
         entity.setIsActive(true);
         usersRepository.saveAndFlush(entity);
 
@@ -38,7 +40,7 @@ public class PostApproveUserService extends ResponseUtil {
                 .role(projection.getRole())
                 .division(projection.getDivision())
                 .department(projection.getDepartment())
-                .status("APPROVED")
+                .status(String.valueOf(UserStatus.ACTIVE))
                 .build();
 
         return ResponseUtil.success(APPROVAL_SUCCESS_CODE, APPROVAL_SUCCESS_MESSAGE, usersResponse);

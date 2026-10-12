@@ -2,6 +2,7 @@ package com.mantap.dashboard.service;
 
 import com.mantap.dashboard.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
+import com.mantap.dashboard.model.entity.UsersEntity;
 import com.mantap.dashboard.model.projection.UsersProjection;
 import com.mantap.dashboard.model.request.AuthLoginRequest;
 import com.mantap.dashboard.model.response.AuthResponse;
@@ -9,9 +10,12 @@ import com.mantap.dashboard.model.response.AuthResponse.UserDto;
 import com.mantap.dashboard.repository.UsersRepository;
 import com.mantap.dashboard.util.JwtUtil;
 import com.mantap.dashboard.util.ResponseUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 import static com.mantap.dashboard.util.constant.Constant.*;
 import static com.mantap.dashboard.util.constant.ResponseConstant.LOGIN_SUCCESS_CODE;
@@ -24,22 +28,22 @@ public class PostAuthLoginService extends ResponseUtil {
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
-
+    @Transactional
     public BaseResponse<AuthResponse> execute(AuthLoginRequest input) {
-        UsersProjection userResponse = usersRepository.findUsersByNip(input.getNip()).orElseThrow(() ->
+
+        String nip = input.getNip().trim();
+        UsersEntity usersResponse = usersRepository.findByNip(nip).orElseThrow(() ->
                 new BusinessException(ERROR_CODE_10000, ERROR_TITLE_10000, ERROR_MESSAGE_10000));
+        validateUser(usersResponse, input);
 
-        validateUser(userResponse, input);
-
-        String token = jwtUtil.generateToken(userResponse);
+        String token = jwtUtil.generateToken(usersResponse);
+        usersResponse.setLastLoginAt(LocalDateTime.now());
 
         UserDto userDto = UserDto.builder()
-                .userId(userResponse.getUserId())
-                .nip(userResponse.getNip())
-                .name(userResponse.getName())
-                .division(userResponse.getDivision())
-                .department(userResponse.getDepartment())
-                .role(userResponse.getRole())
+                .userId(usersResponse.getUserId())
+                .nip(usersResponse.getNip())
+                .name(usersResponse.getName())
+                .role(usersResponse.getRole())
                 .build();
 
         AuthResponse loginResponse = AuthResponse.builder()
@@ -50,7 +54,7 @@ public class PostAuthLoginService extends ResponseUtil {
         return ResponseUtil.success(LOGIN_SUCCESS_CODE, LOGIN_SUCCESS_MESSAGE, loginResponse);
     }
 
-    private void validateUser(UsersProjection user, AuthLoginRequest input) {
+    private void validateUser(UsersEntity user, AuthLoginRequest input) {
         if (Boolean.FALSE.equals(user.getIsActive())) {
             throw new BusinessException(ERROR_CODE_10001, ERROR_TITLE_10001, ERROR_MESSAGE_10001);
         }

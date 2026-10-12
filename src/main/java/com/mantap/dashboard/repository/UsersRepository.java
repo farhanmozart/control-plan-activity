@@ -25,7 +25,8 @@ public interface UsersRepository extends JpaRepository<UsersEntity, String> {
             u.ROLE           AS role,
             u.IS_ACTIVE      AS isActive,
             u.PASSWORD       AS password,
-            u.TOKEN_VERSION  AS tokenVersion
+            u.TOKEN_VERSION  AS tokenVersion,
+            u.STATUS         AS status
         FROM USERS u
         LEFT JOIN DIVISION d
             ON d.DIVISION_ID = u.DIVISION_ID
@@ -44,16 +45,16 @@ public interface UsersRepository extends JpaRepository<UsersEntity, String> {
             u.POSITION AS position,
             d.DIVISION_NAME AS division,
             dp.DEPARTMENT_NAME AS department,
-            u.IS_ACTIVE AS isActive
+            u.IS_ACTIVE AS isActive,
+            u.STATUS AS status
         FROM USERS u
         LEFT JOIN DIVISION d
             ON d.DIVISION_ID = u.DIVISION_ID
         LEFT JOIN DEPARTMENT dp
             ON dp.DEPARTMENT_ID = u.DEPARTMENT_ID
         WHERE u.IS_ACTIVE = 0
-        ORDER BY u.NAME ASC""",
-            nativeQuery = true
-    )
+          AND u.STATUS = 'PENDING_APPROVAL'
+        ORDER BY u.NAME ASC""", nativeQuery = true)
     List<UsersProjection> findPendingUsers();
 
     boolean existsByUserId(String userId);

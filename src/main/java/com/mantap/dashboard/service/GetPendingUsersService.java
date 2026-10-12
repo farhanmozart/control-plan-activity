@@ -5,6 +5,7 @@ import com.mantap.dashboard.model.projection.UsersProjection;
 import com.mantap.dashboard.model.response.PendingUserDto;
 import com.mantap.dashboard.repository.UsersRepository;
 import com.mantap.dashboard.util.ResponseUtil;
+import com.mantap.dashboard.util.enumeration.UserStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,9 +30,9 @@ public class GetPendingUsersService extends ResponseUtil {
                                 .position(user.getPosition())
                                 .division(user.getDivision())
                                 .department(user.getDepartment())
-                                .status("PENDING_APPROVAL")
-                                .build()
-                ).toList();
+                                .status(String.valueOf(UserStatus.PENDING_APPROVAL))
+                                .build())
+                .toList();
         return ResponseUtil.success(response);
     }
 }

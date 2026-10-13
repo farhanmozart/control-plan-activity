@@ -3,8 +3,10 @@ package com.mantap.dashboard.controller.authentication;
 import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.request.AuthLoginRequest;
 import com.mantap.dashboard.model.request.AuthRefreshTokenRequest;
+import com.mantap.dashboard.model.request.PostAuthChangePasswordRequest;
 import com.mantap.dashboard.model.response.AuthRefreshTokenResponse;
 import com.mantap.dashboard.model.response.AuthResponse;
+import com.mantap.dashboard.service.PostAuthChangePasswordService;
 import com.mantap.dashboard.service.PostAuthLoginService;
 import com.mantap.dashboard.service.PostAuthLogoutService;
 import com.mantap.dashboard.service.PostAuthRefreshTokenService;
@@ -24,6 +26,7 @@ public class AuthenticationController {
     private final PostAuthLoginService postAuthLoginService;
     private final PostAuthLogoutService postAuthLogoutService;
     private final PostAuthRefreshTokenService postAuthRefreshTokenService;
+    private final PostAuthChangePasswordService postAuthChangePasswordService;
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<AuthResponse> login(@Valid @RequestBody AuthLoginRequest request) {
@@ -36,9 +39,17 @@ public class AuthenticationController {
         return postAuthLogoutService.execute();
     }
 
-    @PostMapping(value = "/refresh", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/refresh", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<AuthRefreshTokenResponse> refreshToken(@Valid @RequestBody AuthRefreshTokenRequest request) {
         return postAuthRefreshTokenService.execute(request);
+    }
+
+    @PostMapping(value = "/change-password", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated()")
+    public BaseResponse<Void> changePassword(@Valid @RequestBody PostAuthChangePasswordRequest request) {
+        return postAuthChangePasswordService.execute(request);
     }
 
 }

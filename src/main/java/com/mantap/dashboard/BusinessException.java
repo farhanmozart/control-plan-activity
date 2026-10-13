@@ -1,14 +1,16 @@
 package com.mantap.dashboard;
 
-public class BusinessException extends RuntimeException {
-    private final String errorCode;
-    private final String errorTitle;
-    private final String errorMessage;
+import lombok.Getter;
 
-    public BusinessException(String errorCode, String errorTitle, String errorMessage) {
-        super(errorMessage);
-        this.errorCode = errorCode;
-        this.errorTitle = errorTitle;
-        this.errorMessage = errorMessage;
+@Getter
+public class BusinessException extends RuntimeException {
+
+    private final String code;
+    private final String title;
+
+    public BusinessException(String code, String title, String message) {
+        super(message);
+        this.code = code;
+        this.title = title;
     }
 }

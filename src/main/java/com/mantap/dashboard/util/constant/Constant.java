@@ -42,6 +42,18 @@ public class Constant {
     public static final String ERROR_TITLE_10009 = "Invalid Refresh Token";
     public static final String ERROR_MESSAGE_10009 = "Invalid Refresh Token";
 
+    public static final String ERROR_CODE_10010 = "10010";
+    public static final String ERROR_TITLE_10010 = "Invalid Old Password";
+    public static final String ERROR_MESSAGE_10010 = "Invalid Old Password";
+
+    public static final String ERROR_CODE_10011 = "10011";
+    public static final String ERROR_TITLE_10011 = "Invalid, Password Not Match";
+    public static final String ERROR_MESSAGE_10011 = "Invalid, Password Not Match";
+
+    public static final String ERROR_CODE_10012 = "10012";
+    public static final String ERROR_TITLE_10012 = "Invalid Password, Same as Old Password";
+    public static final String ERROR_MESSAGE_10012 = "Invalid Password, Same as Old Password";
+
     public static final String ERROR_CODE_UNAUTHORIZED = "80000";
     public static final String ERROR_TITLE_UNAUTHORIZED = "Unauthorized";
     public static final String ERROR_MESSAGE_UNAUTHORIZED = "Unauthorized";

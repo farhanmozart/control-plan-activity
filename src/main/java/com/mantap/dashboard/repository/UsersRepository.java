@@ -15,6 +15,8 @@ public interface UsersRepository extends JpaRepository<UsersEntity, String> {
 
     Optional<UsersEntity> findByNip(String nip);
 
+    Optional<UsersEntity> findByNipOrEmail(String nip, String email);
+
     @Query(value = """
         SELECT
             u.USER_ID        AS userId,

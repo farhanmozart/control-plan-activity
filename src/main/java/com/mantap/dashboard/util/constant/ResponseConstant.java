@@ -22,5 +22,6 @@ public class ResponseConstant {
     public static final String APPROVAL_SUCCESS_MESSAGE = "Approve success";
 
     public static final String CHANGE_PASSWORD_SUCCESS_MESSAGE = "Password change successfully";
+    public static final String FORGOT_PASSWORD_SUCCESS_MESSAGE = "If the account exists, password reset instructions have been sent";
 
 }

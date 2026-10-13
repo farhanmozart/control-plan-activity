@@ -4,12 +4,10 @@ import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.request.AuthLoginRequest;
 import com.mantap.dashboard.model.request.AuthRefreshTokenRequest;
 import com.mantap.dashboard.model.request.PostAuthChangePasswordRequest;
+import com.mantap.dashboard.model.request.PostAuthForgotPasswordRequest;
 import com.mantap.dashboard.model.response.AuthRefreshTokenResponse;
 import com.mantap.dashboard.model.response.AuthResponse;
-import com.mantap.dashboard.service.PostAuthChangePasswordService;
-import com.mantap.dashboard.service.PostAuthLoginService;
-import com.mantap.dashboard.service.PostAuthLogoutService;
-import com.mantap.dashboard.service.PostAuthRefreshTokenService;
+import com.mantap.dashboard.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -27,6 +25,7 @@ public class AuthenticationController {
     private final PostAuthLogoutService postAuthLogoutService;
     private final PostAuthRefreshTokenService postAuthRefreshTokenService;
     private final PostAuthChangePasswordService postAuthChangePasswordService;
+    private final PostAuthForgotPasswordService postAuthForgotPasswordService;
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<AuthResponse> login(@Valid @RequestBody AuthLoginRequest request) {
@@ -52,4 +51,9 @@ public class AuthenticationController {
         return postAuthChangePasswordService.execute(request);
     }
 
+    @PostMapping(value = "/forgot-password", consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse<Void> forgotPassword(@Valid @RequestBody PostAuthForgotPasswordRequest request) {
+        return postAuthForgotPasswordService.execute(request);
+    }
 }

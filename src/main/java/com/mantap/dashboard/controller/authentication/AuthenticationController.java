@@ -1,10 +1,7 @@
 package com.mantap.dashboard.controller.authentication;
 
 import com.mantap.dashboard.model.dto.BaseResponse;
-import com.mantap.dashboard.model.request.AuthLoginRequest;
-import com.mantap.dashboard.model.request.AuthRefreshTokenRequest;
-import com.mantap.dashboard.model.request.PostAuthChangePasswordRequest;
-import com.mantap.dashboard.model.request.PostAuthForgotPasswordRequest;
+import com.mantap.dashboard.model.request.*;
 import com.mantap.dashboard.model.response.AuthRefreshTokenResponse;
 import com.mantap.dashboard.model.response.AuthResponse;
 import com.mantap.dashboard.service.*;
@@ -26,6 +23,7 @@ public class AuthenticationController {
     private final PostAuthRefreshTokenService postAuthRefreshTokenService;
     private final PostAuthChangePasswordService postAuthChangePasswordService;
     private final PostAuthForgotPasswordService postAuthForgotPasswordService;
+    private final PostAuthResetPasswordService postAuthResetPasswordService;
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<AuthResponse> login(@Valid @RequestBody AuthLoginRequest request) {
@@ -55,5 +53,10 @@ public class AuthenticationController {
     produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<Void> forgotPassword(@Valid @RequestBody PostAuthForgotPasswordRequest request) {
         return postAuthForgotPasswordService.execute(request);
+    }
+
+    @PostMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse<Void> resetPassword(@Valid @RequestBody PostAuthResetPasswordRequest request) {
+        return postAuthResetPasswordService.execute(request);
     }
 }

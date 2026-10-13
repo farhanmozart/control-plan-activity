@@ -54,6 +54,10 @@ public class Constant {
     public static final String ERROR_TITLE_10012 = "Invalid Password, Same as Old Password";
     public static final String ERROR_MESSAGE_10012 = "Invalid Password, Same as Old Password";
 
+    public static final String ERROR_CODE_10013 = "10013";
+    public static final String ERROR_TITLE_10013 = "Invalid Reset Token";
+    public static final String ERROR_MESSAGE_10013 = "Invalid Reset Token";
+
     public static final String ERROR_CODE_UNAUTHORIZED = "80000";
     public static final String ERROR_TITLE_UNAUTHORIZED = "Unauthorized";
     public static final String ERROR_MESSAGE_UNAUTHORIZED = "Unauthorized";

@@ -34,7 +34,7 @@ public class PostAuthChangePasswordService extends ResponseUtil {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new BusinessException(ERROR_CODE_UNAUTHORIZED, ERROR_TITLE_UNAUTHORIZED, ERROR_MESSAGE_UNAUTHORIZED);
+            throw new BusinessException(ERROR_CODE_80000, ERROR_TITLE_80000, ERROR_MESSAGE_80000);
         }
 
         String nip = authentication.getName();

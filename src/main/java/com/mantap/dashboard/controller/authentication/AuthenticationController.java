@@ -4,15 +4,13 @@ import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.request.*;
 import com.mantap.dashboard.model.response.AuthRefreshTokenResponse;
 import com.mantap.dashboard.model.response.AuthResponse;
+import com.mantap.dashboard.model.response.GetAuthSessionResponse;
 import com.mantap.dashboard.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,6 +22,7 @@ public class AuthenticationController {
     private final PostAuthChangePasswordService postAuthChangePasswordService;
     private final PostAuthForgotPasswordService postAuthForgotPasswordService;
     private final PostAuthResetPasswordService postAuthResetPasswordService;
+    private final GetAuthSessionService getAuthSessionService;
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<AuthResponse> login(@Valid @RequestBody AuthLoginRequest request) {
@@ -58,5 +57,11 @@ public class AuthenticationController {
     @PostMapping(value = "/reset-password", produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<Void> resetPassword(@Valid @RequestBody PostAuthResetPasswordRequest request) {
         return postAuthResetPasswordService.execute(request);
+    }
+
+    @GetMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated()")
+    public BaseResponse<GetAuthSessionResponse> getSession() {
+        return getAuthSessionService.execute();
     }
 }

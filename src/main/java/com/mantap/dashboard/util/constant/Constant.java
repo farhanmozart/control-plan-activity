@@ -58,8 +58,7 @@ public class Constant {
     public static final String ERROR_TITLE_10013 = "Invalid Reset Token";
     public static final String ERROR_MESSAGE_10013 = "Invalid Reset Token";
 
-    public static final String ERROR_CODE_UNAUTHORIZED = "80000";
-    public static final String ERROR_TITLE_UNAUTHORIZED = "Unauthorized";
-    public static final String ERROR_MESSAGE_UNAUTHORIZED = "Unauthorized";
-
+    public static final String ERROR_CODE_80000 = "80000";
+    public static final String ERROR_TITLE_80000 = "Unauthorized";
+    public static final String ERROR_MESSAGE_80000 = "Unauthorized";
 }

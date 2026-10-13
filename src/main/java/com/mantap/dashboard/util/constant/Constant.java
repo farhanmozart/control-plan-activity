@@ -39,8 +39,8 @@ public class Constant {
     public static final String ERROR_MESSAGE_10008 = "Invalid Organization";
 
     public static final String ERROR_CODE_10009 = "10009";
-    public static final String ERROR_TITLE_10009 = "User Already Active";
-    public static final String ERROR_MESSAGE_10009 = "User Already Active";
+    public static final String ERROR_TITLE_10009 = "Invalid Refresh Token";
+    public static final String ERROR_MESSAGE_10009 = "Invalid Refresh Token";
 
     public static final String ERROR_CODE_UNAUTHORIZED = "80000";
     public static final String ERROR_TITLE_UNAUTHORIZED = "Unauthorized";

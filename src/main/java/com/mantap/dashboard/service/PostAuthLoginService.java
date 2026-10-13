@@ -2,8 +2,8 @@ package com.mantap.dashboard.service;
 
 import com.mantap.dashboard.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
+import com.mantap.dashboard.model.dto.RefreshTokenResult;
 import com.mantap.dashboard.model.entity.UsersEntity;
-import com.mantap.dashboard.model.projection.UsersProjection;
 import com.mantap.dashboard.model.request.AuthLoginRequest;
 import com.mantap.dashboard.model.response.AuthResponse;
 import com.mantap.dashboard.model.response.AuthResponse.UserDto;
@@ -27,6 +27,7 @@ public class PostAuthLoginService extends ResponseUtil {
     private final UsersRepository usersRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
 
     @Transactional
     public BaseResponse<AuthResponse> execute(AuthLoginRequest input) {
@@ -37,6 +38,7 @@ public class PostAuthLoginService extends ResponseUtil {
         validateUser(usersResponse, input);
 
         String token = jwtUtil.generateToken(usersResponse);
+        RefreshTokenResult refreshToken = refreshTokenService.create(usersResponse);
         usersResponse.setLastLoginAt(LocalDateTime.now());
 
         UserDto userDto = UserDto.builder()
@@ -47,7 +49,10 @@ public class PostAuthLoginService extends ResponseUtil {
                 .build();
 
         AuthResponse loginResponse = AuthResponse.builder()
-                .authToken(token)
+                .accessToken(token)
+                .refreshToken(refreshToken.rawToken())
+                .tokenType("Bearer")
+                .expiresIn(jwtUtil.getExpiration()/1000)
                 .user(userDto)
                 .build();
 

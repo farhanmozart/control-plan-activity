@@ -1,4 +1,4 @@
-package com.mantap.dashboard.model.entity.tasks;
+package com.mantap.dashboard.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

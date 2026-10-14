@@ -1,6 +1,6 @@
 package com.mantap.dashboard.service;
 
-import com.mantap.dashboard.BusinessException;
+import com.mantap.dashboard.util.exception.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.projection.UsersProjection;
 import com.mantap.dashboard.model.response.GetAuthSessionResponse;

@@ -2,7 +2,7 @@ package com.mantap.dashboard.service;
 
 import com.mantap.dashboard.model.dto.RefreshTokenResult;
 import com.mantap.dashboard.model.entity.UsersEntity;
-import com.mantap.dashboard.model.entity.tasks.RefreshTokenEntity;
+import com.mantap.dashboard.model.entity.RefreshTokenEntity;
 import com.mantap.dashboard.repository.RefreshTokenRepository;
 import com.mantap.dashboard.util.RefreshTokenUtil;
 import lombok.RequiredArgsConstructor;

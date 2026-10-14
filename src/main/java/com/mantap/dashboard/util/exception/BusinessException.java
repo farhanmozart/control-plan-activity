@@ -1,4 +1,4 @@
-package com.mantap.dashboard;
+package com.mantap.dashboard.util.exception;
 
 import lombok.Getter;
 

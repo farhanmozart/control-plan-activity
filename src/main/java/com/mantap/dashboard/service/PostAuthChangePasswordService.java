@@ -1,9 +1,9 @@
 package com.mantap.dashboard.service;
 
-import com.mantap.dashboard.BusinessException;
+import com.mantap.dashboard.util.exception.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.entity.UsersEntity;
-import com.mantap.dashboard.model.entity.tasks.RefreshTokenEntity;
+import com.mantap.dashboard.model.entity.RefreshTokenEntity;
 import com.mantap.dashboard.model.request.PostAuthChangePasswordRequest;
 import com.mantap.dashboard.repository.RefreshTokenRepository;
 import com.mantap.dashboard.repository.UsersRepository;

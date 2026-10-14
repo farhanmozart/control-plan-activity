@@ -1,4 +1,4 @@
-package com.mantap.dashboard;
+package com.mantap.dashboard.util.exception;
 
 import com.mantap.dashboard.model.dto.BaseResponse;
 import lombok.extern.slf4j.Slf4j;

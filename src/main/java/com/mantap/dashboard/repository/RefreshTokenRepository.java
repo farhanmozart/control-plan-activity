@@ -1,6 +1,6 @@
 package com.mantap.dashboard.repository;
 
-import com.mantap.dashboard.model.entity.tasks.RefreshTokenEntity;
+import com.mantap.dashboard.model.entity.RefreshTokenEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

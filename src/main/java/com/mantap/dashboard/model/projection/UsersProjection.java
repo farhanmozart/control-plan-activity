@@ -1,5 +1,7 @@
 package com.mantap.dashboard.model.projection;
 
+import java.time.LocalDateTime;
+
 public interface UsersProjection {
     String getUserId();
     String getNip();
@@ -13,4 +15,5 @@ public interface UsersProjection {
     String getEmail();
     String getPosition();
     String getStatus();
+    LocalDateTime getLastLoginAt();
 }

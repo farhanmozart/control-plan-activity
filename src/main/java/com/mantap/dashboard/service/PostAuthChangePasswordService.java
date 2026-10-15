@@ -1,16 +1,16 @@
 package com.mantap.dashboard.service;
 
-import com.mantap.dashboard.util.exception.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
-import com.mantap.dashboard.model.entity.UsersEntity;
 import com.mantap.dashboard.model.entity.RefreshTokenEntity;
+import com.mantap.dashboard.model.entity.UsersEntity;
 import com.mantap.dashboard.model.request.PostAuthChangePasswordRequest;
 import com.mantap.dashboard.repository.RefreshTokenRepository;
 import com.mantap.dashboard.repository.UsersRepository;
 import com.mantap.dashboard.util.ResponseUtil;
+import com.mantap.dashboard.util.SecurityContextHelper;
+import com.mantap.dashboard.util.exception.BusinessException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,16 +28,11 @@ public class PostAuthChangePasswordService extends ResponseUtil {
     private final UsersRepository  usersRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SecurityContextHelper securityContextHelper;
 
     @Transactional
     public BaseResponse<Void> execute(PostAuthChangePasswordRequest input) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new BusinessException(ERROR_CODE_80000, ERROR_TITLE_80000, ERROR_MESSAGE_80000);
-        }
-
-        String nip = authentication.getName();
+        String nip = securityContextHelper.getCurrentNip();
 
         UsersEntity usersEntity = usersRepository.findByNip(nip).orElseThrow(()
                 -> new BusinessException(ERROR_CODE_10000, ERROR_TITLE_10000, ERROR_MESSAGE_10000));

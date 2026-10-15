@@ -25,10 +25,13 @@ public interface UsersRepository extends JpaRepository<UsersEntity, String> {
             d.DIVISION_NAME  AS division,
             dp.DEPARTMENT_NAME AS department,
             u.ROLE           AS role,
+            u.POSITION       AS position,
+            u.EMAIL          AS email,
             u.IS_ACTIVE      AS isActive,
             u.PASSWORD       AS password,
             u.TOKEN_VERSION  AS tokenVersion,
-            u.STATUS         AS status
+            u.STATUS         AS status,
+            u.LAST_LOGIN_AT  AS lastLoginAt
         FROM USERS u
         LEFT JOIN DIVISION d
             ON d.DIVISION_ID = u.DIVISION_ID

@@ -1,13 +1,13 @@
 package com.mantap.dashboard.service;
 
-import com.mantap.dashboard.util.exception.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.entity.UsersEntity;
 import com.mantap.dashboard.repository.UsersRepository;
 import com.mantap.dashboard.util.ResponseUtil;
+import com.mantap.dashboard.util.SecurityContextHelper;
+import com.mantap.dashboard.util.exception.BusinessException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -18,19 +18,12 @@ import static com.mantap.dashboard.util.constant.ResponseConstant.LOGOUT_SUCCESS
 @Service
 @RequiredArgsConstructor
 public class PostAuthLogoutService extends ResponseUtil {
-
     private final UsersRepository usersRepository;
+    private final SecurityContextHelper securityContextHelper;
 
     @Transactional
     public BaseResponse<Void> execute() {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()) {
-            throw new BusinessException(ERROR_CODE_80000, ERROR_TITLE_80000, ERROR_MESSAGE_80000);
-        }
-
-        String nip = authentication.getName();
+        String nip = securityContextHelper.getCurrentNip();
         UsersEntity user = usersRepository.findByNip(nip).orElseThrow(() -> new BusinessException(ERROR_CODE_80000,
                 ERROR_TITLE_80000, ERROR_MESSAGE_80000));
 

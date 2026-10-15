@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static com.mantap.dashboard.util.constant.Constant.LOGGED_USER;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -30,7 +32,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(LOGGED_USER)
     public BaseResponse<Void> logout() {
         return postAuthLogoutService.execute();
     }
@@ -43,7 +45,7 @@ public class AuthenticationController {
 
     @PostMapping(value = "/change-password", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(LOGGED_USER)
     public BaseResponse<Void> changePassword(@Valid @RequestBody PostAuthChangePasswordRequest request) {
         return postAuthChangePasswordService.execute(request);
     }
@@ -60,7 +62,7 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/session", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize(LOGGED_USER)
     public BaseResponse<GetAuthSessionResponse> getSession() {
         return getAuthSessionService.execute();
     }

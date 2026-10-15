@@ -2,6 +2,9 @@ package com.mantap.dashboard.util.constant;
 
 public class Constant {
 
+    public static final String LOGGED_USER = "isAuthenticated()";
+    public static final String LOGGED_ADMIN = "hasRole('ADMIN')";
+
     public static final String ERROR_CODE_10000 = "10000";
     public static final String ERROR_TITLE_10000 = "Data Not Found";
     public static final String ERROR_MESSAGE_10000 = "Data Not Found";

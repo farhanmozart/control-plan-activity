@@ -2,14 +2,12 @@ package com.mantap.dashboard.controller.users;
 
 import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.request.AuthApproveUserRequest;
+import com.mantap.dashboard.model.request.PostUpdateUserProfileRequest;
 import com.mantap.dashboard.model.request.UserSignUpRequest;
 import com.mantap.dashboard.model.response.AuthResponse.UserDto;
 import com.mantap.dashboard.model.response.PendingUserDto;
 import com.mantap.dashboard.model.response.UsersProfileResponse;
-import com.mantap.dashboard.service.GetPendingUsersService;
-import com.mantap.dashboard.service.GetUsersProfileService;
-import com.mantap.dashboard.service.PostApproveUserService;
-import com.mantap.dashboard.service.PostUserSignUpService;
+import com.mantap.dashboard.service.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -29,6 +27,7 @@ public class UsersController {
     private final PostApproveUserService postApproveUserService;
     private final GetPendingUsersService getPendingUsersService;
     private final GetUsersProfileService getUsersProfileService;
+    private final PostUpdateUserProfileService postUpdateUserProfileService;
 
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<UserDto> login(@Valid @RequestBody UserSignUpRequest request) {
@@ -53,5 +52,11 @@ public class UsersController {
     @PreAuthorize(LOGGED_USER)
     public BaseResponse<UsersProfileResponse> getProfile() {
         return getUsersProfileService.execute();
+    }
+
+    @PatchMapping(value = "/profile", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(LOGGED_USER)
+    public BaseResponse<UsersProfileResponse> updateProfile(@Valid @RequestBody PostUpdateUserProfileRequest request) {
+        return postUpdateUserProfileService.execute(request);
     }
 }

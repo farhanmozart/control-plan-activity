@@ -1,6 +1,7 @@
 package com.mantap.dashboard.repository;
 
 import com.mantap.dashboard.model.entity.UsersEntity;
+import com.mantap.dashboard.model.projection.UserDetailProjection;
 import com.mantap.dashboard.model.projection.UsersProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -83,6 +84,33 @@ public interface UsersRepository extends JpaRepository<UsersEntity, String> {
         ORDER BY u.NAME ASC
         """, nativeQuery = true)
     List<UsersProjection> findAllUsers();
+
+    @Query(value = """
+        SELECT
+            u.USER_ID AS userId,
+            u.NIP AS nip,
+            u.NAME AS name,
+            u.EMAIL AS email,
+            u.ROLE AS role,
+            u.POSITION AS position,
+            u.DIVISION_ID AS divisionId,
+            d.DIVISION_NAME AS division,
+            u.DEPARTMENT_ID AS departmentId,
+            dp.DEPARTMENT_NAME AS department,
+            u.IS_ACTIVE AS isActive,
+            u.STATUS AS status,
+            u.LAST_LOGIN_AT AS lastLoginAt,
+            u.CREATED_AT AS createdAt,
+            u.UPDATED_AT AS updatedAt
+        FROM USERS u
+        LEFT JOIN DIVISION d
+            ON d.DIVISION_ID = u.DIVISION_ID
+        LEFT JOIN DEPARTMENT dp
+            ON dp.DEPARTMENT_ID = u.DEPARTMENT_ID
+
+        WHERE u.USER_ID = :userId
+        """, nativeQuery = true)
+    Optional<UserDetailProjection> findUserDetailByUserId(@Param("userId") String userId);
 
     boolean existsByUserId(String userId);
     boolean existsByNip(String nip);

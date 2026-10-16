@@ -63,4 +63,9 @@ public class UsersEntity {
     @Column(name = "LAST_LOGIN_AT")
     private LocalDateTime lastLoginAt;
 
+    @Column(name = "CREATED_AT")
+    private LocalDateTime createdAt;
+
+    @Column(name = "UPDATED_AT")
+    private LocalDateTime updatedAt;
 }

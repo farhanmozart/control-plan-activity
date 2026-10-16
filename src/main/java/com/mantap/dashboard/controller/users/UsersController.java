@@ -6,6 +6,7 @@ import com.mantap.dashboard.model.request.PostUpdateUserProfileRequest;
 import com.mantap.dashboard.model.request.UserSignUpRequest;
 import com.mantap.dashboard.model.response.AuthResponse.UserDto;
 import com.mantap.dashboard.model.response.PendingUserDto;
+import com.mantap.dashboard.model.response.UsersDetailResponse;
 import com.mantap.dashboard.model.response.UsersProfileResponse;
 import com.mantap.dashboard.service.*;
 import jakarta.validation.Valid;
@@ -29,6 +30,7 @@ public class UsersController {
     private final GetUsersProfileService getUsersProfileService;
     private final PostUpdateUserProfileService postUpdateUserProfileService;
     private final GetListUsersService getListUsersService;
+    private final GetUsersDetailService getUsersDetailService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(LOGGED_ADMIN)
@@ -65,5 +67,11 @@ public class UsersController {
     @PreAuthorize(LOGGED_USER)
     public BaseResponse<UsersProfileResponse> updateProfile(@Valid @RequestBody PostUpdateUserProfileRequest request) {
         return postUpdateUserProfileService.execute(request);
+    }
+
+    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(LOGGED_ADMIN)
+    public BaseResponse<UsersDetailResponse> getUserDetail(@PathVariable String userId) {
+        return getUsersDetailService.execute(userId);
     }
 }

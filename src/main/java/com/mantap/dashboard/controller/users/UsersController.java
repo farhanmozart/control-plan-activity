@@ -28,6 +28,13 @@ public class UsersController {
     private final GetPendingUsersService getPendingUsersService;
     private final GetUsersProfileService getUsersProfileService;
     private final PostUpdateUserProfileService postUpdateUserProfileService;
+    private final GetListUsersService getListUsersService;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(LOGGED_ADMIN)
+    public BaseResponse<List<UsersProfileResponse>> getListUsers() {
+        return getListUsersService.execute();
+    }
 
     @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE)
     public BaseResponse<UserDto> login(@Valid @RequestBody UserSignUpRequest request) {

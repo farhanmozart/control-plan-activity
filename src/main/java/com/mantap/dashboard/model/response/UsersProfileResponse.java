@@ -21,5 +21,6 @@ public class UsersProfileResponse {
     private String division;
     private String department;
     private String status;
+    private Boolean isActive;
     private LocalDateTime lastLoginAt;
 }

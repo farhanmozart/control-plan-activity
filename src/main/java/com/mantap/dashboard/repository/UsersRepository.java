@@ -62,6 +62,28 @@ public interface UsersRepository extends JpaRepository<UsersEntity, String> {
         ORDER BY u.NAME ASC""", nativeQuery = true)
     List<UsersProjection> findPendingUsers();
 
+    @Query(value = """
+        SELECT
+            u.USER_ID AS userId,
+            u.NIP AS nip,
+            u.NAME AS name,
+            u.EMAIL AS email,
+            u.ROLE AS role,
+            u.POSITION AS position,
+            d.DIVISION_NAME AS division,
+            dp.DEPARTMENT_NAME AS department,
+            u.IS_ACTIVE AS isActive,
+            u.STATUS AS status,
+            u.LAST_LOGIN_AT AS lastLoginAt
+        FROM USERS u
+        LEFT JOIN DIVISION d
+            ON d.DIVISION_ID = u.DIVISION_ID
+        LEFT JOIN DEPARTMENT dp
+            ON dp.DEPARTMENT_ID = u.DEPARTMENT_ID
+        ORDER BY u.NAME ASC
+        """, nativeQuery = true)
+    List<UsersProjection> findAllUsers();
+
     boolean existsByUserId(String userId);
     boolean existsByNip(String nip);
     boolean existsByEmail(String email);

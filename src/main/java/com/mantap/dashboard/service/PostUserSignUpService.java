@@ -79,6 +79,7 @@ public class PostUserSignUpService extends ResponseUtil {
         users.setPosition(input.getPosition());
         users.setIsActive(false);
         users.setTokenVersion(0L);
+        users.setFailedLoginAttempts(0);
         usersRepository.save(users);
     }
 

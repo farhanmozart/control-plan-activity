@@ -4,7 +4,7 @@ import com.mantap.dashboard.util.exception.BusinessException;
 import com.mantap.dashboard.model.dto.BaseResponse;
 import com.mantap.dashboard.model.entity.UsersEntity;
 import com.mantap.dashboard.model.projection.UsersProjection;
-import com.mantap.dashboard.model.request.AuthApproveUserRequest;
+import com.mantap.dashboard.model.request.AuthUserRequest;
 import com.mantap.dashboard.model.response.AuthResponse.UserDto;
 import com.mantap.dashboard.repository.UsersRepository;
 import com.mantap.dashboard.util.ResponseUtil;
@@ -23,7 +23,7 @@ public class PostApproveUserService extends ResponseUtil {
     private final UsersRepository usersRepository;
 
     @Transactional
-    public BaseResponse<UserDto> execute(AuthApproveUserRequest input) {
+    public BaseResponse<UserDto> execute(AuthUserRequest input) {
         UsersEntity entity = usersRepository.findByNip(input.getNip()).orElseThrow(()
                 -> new BusinessException(ERROR_CODE_10000, ERROR_TITLE_10000, ERROR_MESSAGE_10000));
         entity.setStatus(UserStatus.ACTIVE);

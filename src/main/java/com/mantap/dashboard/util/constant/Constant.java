@@ -61,6 +61,10 @@ public class Constant {
     public static final String ERROR_TITLE_10013 = "Invalid Reset Token";
     public static final String ERROR_MESSAGE_10013 = "Invalid Reset Token";
 
+    public static final String ERROR_CODE_10014 = "10014";
+    public static final String ERROR_TITLE_10014 = "User is Not Pending";
+    public static final String ERROR_MESSAGE_10014 = "User is Not Pending";
+
     public static final String ERROR_CODE_80000 = "80000";
     public static final String ERROR_TITLE_80000 = "Unauthorized";
     public static final String ERROR_MESSAGE_80000 = "Unauthorized";

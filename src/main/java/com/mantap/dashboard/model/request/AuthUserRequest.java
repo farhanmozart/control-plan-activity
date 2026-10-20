@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthApproveUserRequest {
+public class AuthUserRequest {
     @NotBlank
     private String nip;
 }

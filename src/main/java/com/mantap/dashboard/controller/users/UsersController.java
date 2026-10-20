@@ -1,7 +1,7 @@
 package com.mantap.dashboard.controller.users;
 
 import com.mantap.dashboard.model.dto.BaseResponse;
-import com.mantap.dashboard.model.request.AuthApproveUserRequest;
+import com.mantap.dashboard.model.request.AuthUserRequest;
 import com.mantap.dashboard.model.request.PostUpdateUserProfileRequest;
 import com.mantap.dashboard.model.request.UserSignUpRequest;
 import com.mantap.dashboard.model.response.AuthResponse.UserDto;
@@ -26,6 +26,7 @@ import static com.mantap.dashboard.util.constant.Constant.LOGGED_USER;
 public class UsersController {
     private final PostUserSignUpService postUsersSignUpService;
     private final PostApproveUserService postApproveUserService;
+    private final PostRejectUserService postRejectUserService;
     private final GetPendingUsersService getPendingUsersService;
     private final GetUsersProfileService getUsersProfileService;
     private final PostUpdateUserProfileService postUpdateUserProfileService;
@@ -47,8 +48,13 @@ public class UsersController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(LOGGED_ADMIN)
-    public BaseResponse<UserDto> approveUser(@Valid @RequestBody AuthApproveUserRequest nip) {
+    public BaseResponse<UserDto> approveUser(@Valid @RequestBody AuthUserRequest nip) {
         return postApproveUserService.execute(nip);
+    }
+
+    @PostMapping(value = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public BaseResponse<UserDto> rejectUser(@Valid @RequestBody AuthUserRequest nip) {
+        return postRejectUserService.execute(nip);
     }
 
     @GetMapping(value = "/pending", produces = MediaType.APPLICATION_JSON_VALUE)

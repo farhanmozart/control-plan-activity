@@ -35,6 +35,7 @@ public class GetUsersProfileService extends ResponseUtil {
                 .division(usersProjection.getDivision())
                 .department(usersProjection.getDepartment())
                 .status(usersProjection.getStatus())
+                .isActive(Integer.valueOf(1).equals(usersProjection.getIsActive()))
                 .lastLoginAt(usersProjection.getLastLoginAt())
                 .build();
         return ResponseUtil.success(SUCCESS_CODE, SUCCESS_MESSAGE, response);

@@ -32,6 +32,8 @@ public class UsersController {
     private final PostUpdateUserProfileService postUpdateUserProfileService;
     private final GetListUsersService getListUsersService;
     private final GetUsersDetailService getUsersDetailService;
+    private final PostActivateUserService postActivateUserService;
+    private final PostDeactivateUserService postDeactivateUserService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(LOGGED_ADMIN)
@@ -48,13 +50,13 @@ public class UsersController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(LOGGED_ADMIN)
-    public BaseResponse<UserDto> approveUser(@Valid @RequestBody AuthUserRequest nip) {
-        return postApproveUserService.execute(nip);
+    public BaseResponse<UserDto> approveUser(@Valid @RequestBody AuthUserRequest request) {
+        return postApproveUserService.execute(request);
     }
 
     @PostMapping(value = "/reject", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BaseResponse<UserDto> rejectUser(@Valid @RequestBody AuthUserRequest nip) {
-        return postRejectUserService.execute(nip);
+    public BaseResponse<UserDto> rejectUser(@Valid @RequestBody AuthUserRequest request) {
+        return postRejectUserService.execute(request);
     }
 
     @GetMapping(value = "/pending", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -79,5 +81,17 @@ public class UsersController {
     @PreAuthorize(LOGGED_ADMIN)
     public BaseResponse<UsersDetailResponse> getUserDetail(@PathVariable String userId) {
         return getUsersDetailService.execute(userId);
+    }
+
+    @PostMapping(value = "/activate", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(LOGGED_ADMIN)
+    public BaseResponse<UserDto> activateUser(@Valid @RequestBody AuthUserRequest request) {
+     return postActivateUserService.execute(request);
+    }
+
+    @PostMapping(value = "/deactivate", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize(LOGGED_ADMIN)
+    public BaseResponse<UserDto> deactivateUser(@Valid @RequestBody AuthUserRequest request) {
+        return postDeactivateUserService.execute(request);
     }
 }

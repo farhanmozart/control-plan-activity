@@ -65,6 +65,18 @@ public class Constant {
     public static final String ERROR_TITLE_10014 = "User is Not Pending";
     public static final String ERROR_MESSAGE_10014 = "User is Not Pending";
 
+    public static final String ERROR_CODE_10015 = "10015";
+    public static final String ERROR_TITLE_10015 = "User Already Active";
+    public static final String ERROR_MESSAGE_10015 = "User Already Active";
+
+    public static final String ERROR_CODE_10016 = "10016";
+    public static final String ERROR_TITLE_10016 = "User Pending Approval";
+    public static final String ERROR_MESSAGE_10016 = "User Pending Approval";
+
+    public static final String ERROR_CODE_10017 = "10017";
+    public static final String ERROR_TITLE_10017 = "User Rejected";
+    public static final String ERROR_MESSAGE_10017 = "User Rejected";
+
     public static final String ERROR_CODE_80000 = "80000";
     public static final String ERROR_TITLE_80000 = "Unauthorized";
     public static final String ERROR_MESSAGE_80000 = "Unauthorized";
